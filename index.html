@@ -1,3 +1,5 @@
+# إعادة إنشاء ملف index.html الصحيح بعد انتهاء الجلسة السابقة
+html_code = """
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -93,18 +95,10 @@
   </style>
 </head>
 <body>
-  <!-- واجهة المقدمة -->
   <div class="intro" id="introScreen">
-    <div class="tagline">
-      <span>بسم الله الوكيل</span>
-    </div>
-    <div class="tagline">
-      <span>تحليل رقمي</span>
-    </div>
-    <div class="tagline">
-      <span>إلى اللانهاية نرتقي سويًا</span>
-      <span class="infinity">∞</span>
-    </div>
+    <div class="tagline"><span>بسم الله الوكيل</span></div>
+    <div class="tagline"><span>تحليل رقمي</span></div>
+    <div class="tagline"><span>إلى اللانهاية نرتقي سويًا</span><span class="infinity">∞</span></div>
     <p>
       تَحليل رُقمي قُرآني – لنكون من أَصحاب الرّقِيم<br>
       إهداء محبة وتقدير للأستاذ المبارك: عبدالرحمن عمرو 🌿<br>
@@ -118,7 +112,6 @@
     <div id="errorMessage" style="color:red; margin-top:10px;"></div>
   </div>
 
-  <!-- واجهة التحليل الأصلية -->
   <div id="mainApp">
     <h2>منصة التحليل الرقمي المتقدمة</h2>
     <textarea id="inputText" placeholder="أدخل كلمة أو نصًا أو رقمًا لتحليل قيمه الرقمية..." style="width:90%; height:150px;"></textarea>
@@ -143,6 +136,101 @@ function startApp() {
     document.getElementById("errorMessage").textContent = "رمز المرور غير صحيح";
   }
 }
+
+document.getElementById("inputText")?.addEventListener("input", analyze);
+
+const values = {
+  "أ":1, "إ":1, "آ":1, "ء":1, "ا":1, "ى":1, "ٱ":1, "ب":9, "ت":11, "ث":25, "ج":19, "ح":18, "خ":20,
+  "د":16, "ذ":17, "ر":8, "ز":24, "س":15, "ش":21, "ص":22, "ض":23, "ط":26, "ظ":28, "ع":12, "غ":27,
+  "ف":13, "ق":14, "ك":10, "ل":2, "م":4, "ن":3, "ه":7, "هـ":7, "ة":7, "و":5, "ؤ":5, "ي":6, "ئ":6,
+  "A":1, "I":1, "AA":1, "'":1, "YAA":1, "L":2, "N":3, "M":4, "W":5, "U":5, "Y":6, "E":6, "H":7,
+  "R":8, "B":9, "K":10, "T":11, "A'":12, "F":13, "Q":14, "S":15, "D":16, "DH":17, "H'":18, "J":19,
+  "KH":20, "SH":21, "S'":22, "D'":23, "Z":24, "TH":25, "T'":26, "GH":27, "Z'":28,
+  "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9
+};
+
+const ignoredChars = ['َ','ً','ُ','ٌ','ِ','ٍ','ْ','ّ','(',')','﴾','﴿','.',',','؛','؟','!','-','_','—','"',"'",'\n','\r','/','۝','۩','۞','ۚ','ۛ','ۖ','ۗ','ۘ','ۙ','ۜ','۟','۠','ۡ','ۢ','ۤ','ۥ','ۦ','ۧ','ۨ','۬','۫','۪','ۭ','ۯ','ٖ','ٗ','ٓ','ٔ','ٞ','ـ','ٰ'];
+
+function simplify(num) {
+  const steps = [];
+  while (num > 9) {
+    steps.push(num);
+    num = num.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
+  }
+  steps.push(num);
+  return steps;
+}
+
+function analyze() {
+  const text = document.getElementById("inputText").value;
+  let total = 0;
+  let details = [];
+  for (let char of text) {
+    if (char === ' ' || ignoredChars.includes(char)) {
+      if (char === ' ') details.push('&nbsp;&nbsp;');
+      continue;
+    }
+    let value = values[char];
+    if (value !== undefined) {
+      total += value;
+      details.push(`${char} = ${value}`);
+    } else {
+      details.push(`${char} = غير معروف`);
+    }
+  }
+  const steps = simplify(total);
+  const simplified = steps[steps.length - 1];
+  let html = "<strong>القيمة الكلية:</strong> " + total + "<br>";
+  if (steps.length > 1) {
+    html += "<strong>مراحل التبسيط:</strong><br>" + steps.slice(0, -1).map((s, i) => "المرحلة " + (i + 1) + ": " + s).join("<br>") + "<br>";
+  }
+  html += "<strong>التبسيط النهائي:</strong> " + simplified;
+  document.getElementById("result").innerHTML = html;
+  document.getElementById("details").innerHTML = "<strong>تفاصيل:</strong><br>" + details.join("<br>");
+}
+
+function toggleDetails() {
+  const detailsDiv = document.getElementById("details");
+  detailsDiv.style.display = detailsDiv.style.display === "none" ? "block" : "none";
+}
+
+function copyResult() {
+  const resultText = document.getElementById("result").innerText + "\\n" + document.getElementById("details").innerText;
+  navigator.clipboard.writeText(resultText).then(() => {
+    alert("تم نسخ النتيجة!");
+  });
+}
+
+function downloadPDF() {
+  const text = document.getElementById("result").innerText + "\\n" + document.getElementById("details").innerText;
+  const blob = new Blob([text], { type: 'application/pdf' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = "تحليل_رقمي.pdf";
+  link.click();
+}
+
+function analyzeWords() {
+  const text = document.getElementById("inputText").value.trim();
+  const words = text.split(/\\s+/);
+  let output = "";
+  for (let word of words) {
+    let total = 0;
+    for (let c of word) {
+      if (ignoredChars.includes(c)) continue;
+      const value = values[c];
+      if (value) total += value;
+    }
+    output += word + " = " + total + "<br>";
+  }
+  document.getElementById("wordDetails").innerHTML = "<strong>تحليل الكلمات:</strong><br>" + output;
+}
 </script>
 </body>
 </html>
+"""
+
+# حفظ الملف
+path = Path("/mnt/data/index.html")
+path.write_text(html_code, encoding="utf-8")
+path.name
