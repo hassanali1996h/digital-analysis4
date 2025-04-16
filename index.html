@@ -1,85 +1,38 @@
-# إعادة إنشاء ملف index.html الصحيح بعد انتهاء الجلسة السابقة
-html_code = """
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>التحليل الرقمي القرآني</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
       font-family: 'Cairo', sans-serif;
       background-color: #fdfcf9;
       color: #333;
-    }
-    .intro {
       text-align: center;
-      padding: 60px 20px;
-      border-radius: 20px;
-    }
-    .icon {
-      font-size: 30px;
-      color: goldenrod;
-      margin-bottom: 10px;
-    }
-    .tagline {
-      font-size: 20px;
-      color: #2e7d32;
-      font-weight: bold;
-      margin-bottom: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-    .tagline .infinity {
-      font-size: 24px;
-      color: goldenrod;
-    }
-    .intro p {
-      font-size: 18px;
-      line-height: 2;
-    }
-    .intro h1 {
-      margin-top: 40px;
-      font-size: 28px;
-    }
-    .intro h3 {
-      margin-top: 10px;
-      font-weight: normal;
-      color: #666;
+      padding: 20px;
     }
     .start-btn {
-      margin-top: 30px;
-      padding: 12px 25px;
-      font-size: 18px;
       background-color: goldenrod;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
       border: none;
       border-radius: 8px;
-      color: white;
       cursor: pointer;
     }
     .start-btn:hover {
       background-color: #caa520;
     }
-    #mainApp {
-      display: none;
-      padding: 20px;
-      text-align: center;
-    }
-    #mainApp h2 {
-      color: #2e7d32;
-      font-size: 26px;
-    }
-    #inputText {
-      border: 2px solid #a5d6a7;
-      border-radius: 10px;
+    textarea {
+      width: 90%;
+      height: 150px;
       padding: 10px;
       font-size: 1em;
+      border: 2px solid #a5d6a7;
+      border-radius: 10px;
     }
-    button {
+    button, label {
       background-color: #388e3c;
       color: white;
       border: none;
@@ -89,40 +42,47 @@ html_code = """
       font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
+    button:hover, label:hover {
       background-color: #2e7d32;
+    }
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-left: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="intro" id="introScreen">
-    <div class="tagline"><span>بسم الله الوكيل</span></div>
-    <div class="tagline"><span>تحليل رقمي</span></div>
-    <div class="tagline"><span>إلى اللانهاية نرتقي سويًا</span><span class="infinity">∞</span></div>
-    <p>
-      تَحليل رُقمي قُرآني – لنكون من أَصحاب الرّقِيم<br>
-      إهداء محبة وتقدير للأستاذ المبارك: عبدالرحمن عمرو 🌿<br>
-      تم تطوير هذه الأداة تعبيرًا عن الامتنان لما قدمه لنا من علم حق وفكر صمدي 🌿<br>
-      وهي جاهزة للاستخدام في سياقه الحالي، ويمكن البناء عليها لخدمة طلابكم الكرام بشكل أوسع.
-    </p>
-    <h1>التحليل الرقمي القرآني</h1>
-    <h3>اكتشف أسرار الحروف والأرقام في النصوص القرآنية</h3>
-    <input type="password" id="passcodeInput" placeholder="رمز المرور" style="padding:10px; font-size:16px; width:200px; margin-top:20px;"><br>
-    <button class="start-btn" onclick="startApp()">ابدأ التحليل</button>
+  <!-- واجهة المقدمة -->
+  <div class="intro" id="introScreen" style="text-align:center; padding:40px;">
+    <h2 style="color:#2e7d32;">بسم الله الوكيل</h2>
+    <h3 style="color:#2e7d32;">تحليل رقمي</h3>
+    <p style="font-weight:bold; color:#2e7d32;">إلى اللانهاية نرتقي سويًا <span style="color:goldenrod;">∞</span></p>
+    <p>تحليل رقمي قرآني – لنكون من أصحاب الرقيم<br>
+    إهداء محبة وتقدير للأستاذ المبارك: عبدالرحمن عمرو 🌿<br>
+    تم تطوير هذه الأداة تعبيرًا عن الامتنان لما قدمه لنا من علم حق وفكر صمدي 🌿</p>
+    <input type="password" id="passcodeInput" placeholder="رمز المرور" style="padding:10px; font-size:16px; width:200px;"><br>
+    <button class="start-btn" onclick="startApp()" style="margin-top:15px;">ابدأ التحليل</button>
     <div id="errorMessage" style="color:red; margin-top:10px;"></div>
   </div>
 
-  <div id="mainApp">
-    <h2>منصة التحليل الرقمي المتقدمة</h2>
-    <textarea id="inputText" placeholder="أدخل كلمة أو نصًا أو رقمًا لتحليل قيمه الرقمية..." style="width:90%; height:150px;"></textarea>
-    <div id="result" style="margin-top:20px; font-size: 1.2em;"></div>
-    <div id="details" style="margin-top:15px; display:none;"></div>
+  <!-- الواجهة الرئيسية بعد المرور -->
+  <div id="mainApp" style="display:none;">
+    <h2>التحليل الرقمي القرآني</h2>
+    <textarea id="inputText" placeholder="أدخل نصًا قرآنيًا أو نصًا عاديًا..."></textarea>
     <button onclick="toggleDetails()">عرض/إخفاء التفاصيل</button>
+
     <div style="margin-top: 20px;">
+      <label>
+        تجاهل الترقيم
+        <input type="checkbox" id="ignoreNumbers" checked>
+      </label>
       <button onclick="copyResult()">📋 نسخ النتيجة</button>
       <button onclick="downloadPDF()">📄 حفظ PDF</button>
       <button onclick="analyzeWords()">🔍 تحليل كل كلمة</button>
     </div>
+
+    <div id="result" style="margin-top:20px; font-size: 1.2em;"></div>
+    <div id="details" style="margin-top:15px; display:none;"></div>
     <div id="wordDetails" style="margin-top: 15px; font-size: 1em;"></div>
   </div>
 
@@ -137,19 +97,20 @@ function startApp() {
   }
 }
 
-document.getElementById("inputText")?.addEventListener("input", analyze);
-
 const values = {
   "أ":1, "إ":1, "آ":1, "ء":1, "ا":1, "ى":1, "ٱ":1, "ب":9, "ت":11, "ث":25, "ج":19, "ح":18, "خ":20,
   "د":16, "ذ":17, "ر":8, "ز":24, "س":15, "ش":21, "ص":22, "ض":23, "ط":26, "ظ":28, "ع":12, "غ":27,
   "ف":13, "ق":14, "ك":10, "ل":2, "م":4, "ن":3, "ه":7, "هـ":7, "ة":7, "و":5, "ؤ":5, "ي":6, "ئ":6,
-  "A":1, "I":1, "AA":1, "'":1, "YAA":1, "L":2, "N":3, "M":4, "W":5, "U":5, "Y":6, "E":6, "H":7,
-  "R":8, "B":9, "K":10, "T":11, "A'":12, "F":13, "Q":14, "S":15, "D":16, "DH":17, "H'":18, "J":19,
-  "KH":20, "SH":21, "S'":22, "D'":23, "Z":24, "TH":25, "T'":26, "GH":27, "Z'":28,
-  "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9
+  "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9,
+  "A":1, "AA":1, "'":1, "B":9, "T":11, "TH":25, "J":19, "H'":18, "KH":20, "D":16, "DH":17,
+  "R":8, "Z":24, "S":15, "SH":21, "S'":22, "D'":23, "T'":26, "Z'":28, "A'":12, "GH":27, "F":13,
+  "Q":14, "K":10, "L":2, "M":4, "N":3, "H":7, "W":5, "U":5, "Y":6, "E":6
 };
 
 const ignoredChars = ['َ','ً','ُ','ٌ','ِ','ٍ','ْ','ّ','(',')','﴾','﴿','.',',','؛','؟','!','-','_','—','"',"'",'\n','\r','/','۝','۩','۞','ۚ','ۛ','ۖ','ۗ','ۘ','ۙ','ۜ','۟','۠','ۡ','ۢ','ۤ','ۥ','ۦ','ۧ','ۨ','۬','۫','۪','ۭ','ۯ','ٖ','ٗ','ٓ','ٔ','ٞ','ـ','ٰ'];
+
+document.getElementById("inputText").addEventListener("input", () => { analyze(); });
+document.getElementById("ignoreNumbers").addEventListener("change", () => { analyze(); });
 
 function simplify(num) {
   const steps = [];
@@ -163,13 +124,18 @@ function simplify(num) {
 
 function analyze() {
   const text = document.getElementById("inputText").value;
+  const ignoreNumbers = document.getElementById("ignoreNumbers").checked;
   let total = 0;
   let details = [];
+
   for (let char of text) {
     if (char === ' ' || ignoredChars.includes(char)) {
       if (char === ' ') details.push('&nbsp;&nbsp;');
       continue;
     }
+
+    if (ignoreNumbers && /[0-9١-٩]/.test(char)) continue;
+
     let value = values[char];
     if (value !== undefined) {
       total += value;
@@ -178,6 +144,7 @@ function analyze() {
       details.push(`${char} = غير معروف`);
     }
   }
+
   const steps = simplify(total);
   const simplified = steps[steps.length - 1];
   let html = "<strong>القيمة الكلية:</strong> " + total + "<br>";
@@ -212,7 +179,7 @@ function downloadPDF() {
 
 function analyzeWords() {
   const text = document.getElementById("inputText").value.trim();
-  const words = text.split(/\\s+/);
+  const words = text.split(/\s+/);
   let output = "";
   for (let word of words) {
     let total = 0;
@@ -228,9 +195,3 @@ function analyzeWords() {
 </script>
 </body>
 </html>
-"""
-
-# حفظ الملف
-path = Path("/mnt/data/index.html")
-path.write_text(html_code, encoding="utf-8")
-path.name
