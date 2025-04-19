@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>التحليل الرقمي القرآني</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,58 +24,62 @@
       color: #ffffff !important;
       border-color: #444 !important;
     }
-    .intro-bg {
-      background-image: url('https://images.unsplash.com/photo-1587502537745-0f44f62b3c2b?auto=format&fit=crop&w=1050&q=80');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
   </style>
 </head>
 <body id="body" class="bg-[#fdfcf9] text-[#2e7d32] p-6">
 
-  <div class="fixed top-4 left-4 z-50">
-    <button onclick="toggleDarkMode()" class="bg-gray-800 text-white px-3 py-1 rounded-xl text-sm shadow-md hover:bg-gray-700">🌓 وضع الليل</button>
+<div class="fixed top-4 left-4 z-50">
+  <button onclick="toggleDarkMode()" class="bg-gray-800 text-white px-3 py-1 rounded-xl text-sm shadow-md hover:bg-gray-700">🌓 وضع الليل</button>
+</div>
+
+<div id="introScreen" class="text-center py-16 max-w-xl mx-auto bg-white shadow-xl rounded-xl">
+  <div class="p-6">
+    <h2 class="text-3xl font-bold mb-2">بسم الله الوكيل</h2>
+    <h3 class="text-2xl font-semibold mb-1">تحليل رقمي</h3>
+    <p class="text-lg font-semibold mb-4 text-yellow-600">✨ إلى اللانهاية نرتقي سويًا ∞</p>
+    <p class="text-sm text-gray-700 leading-relaxed mb-4">
+      تحليل رقمي قرآني – لنكون من أصحاب الرقيم<br>
+      إهداء محبة وتقدير للأستاذ المبارك: عبدالرحمن عمرو 🌿<br>
+      تم تطوير هذه الأداة تعبيرًا عن الامتنان لما قدمه لنا من علم حق وفكر صمدي 🌿
+    </p>
+    <input type="password" id="passcodeInput" placeholder="رمز المرور"
+      class="p-3 text-center border rounded-xl w-64 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 mb-4" />
+    <br>
+    <button onclick="startApp()"
+      class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded-xl text-lg">ابدأ التحليل</button>
+    <div id="errorMessage" class="text-red-600 mt-3 text-sm"></div>
+  </div>
+</div>
+
+<div id="mainApp" style="display: none;" class="max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold text-center mb-4">التحليل الرقمي القرآني</h2>
+  <textarea id="inputText" placeholder="أدخل نصًا قرآنيًا أو نصًا عاديًا..."
+    class="w-full h-40 p-4 border-2 border-green-200 rounded-xl text-lg mb-4 focus:outline-none focus:ring-2 focus:ring-green-400 resize-none"></textarea>
+
+  <div class="flex flex-wrap justify-center gap-2 mb-4">
+    <button onclick="toggleDetails()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-xl text-sm">عرض/إخفاء التفاصيل</button>
+    <label class="flex items-center gap-2 text-green-800 text-sm font-medium">
+      <input type="checkbox" id="ignoreNumbers" checked class="scale-125 accent-green-600"> تجاهل الترقيم
+    </label>
+    <button onclick="copyResult()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-xl text-sm">📋 نسخ النتيجة</button>
+    <button onclick="downloadPDF()" class="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded-xl text-sm">📄 حفظ PDF</button>
+    <button onclick="analyzeWords()" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-xl text-sm">🔍 تحليل كل كلمة</button>
   </div>
 
-  <div id="introScreen" class="text-center py-16 max-w-xl mx-auto intro-bg bg-opacity-90 rounded-xl shadow-xl">
-    <div class="bg-white/80 dark:bg-black/60 p-6 rounded-xl">
-      <h2 class="text-3xl font-bold mb-2">بسم الله الوكيل</h2>
-      <h3 class="text-2xl font-semibold mb-1">تحليل رقمي</h3>
-      <p class="text-lg font-semibold mb-4 text-yellow-600">✨ إلى اللانهاية نرتقي سويًا <span style="font-size: 22px;">∞</span></p>
-      <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-        تحليل رقمي قرآني – لنكون من أصحاب الرقيم<br>
-        إهداء محبة وتقدير للأستاذ المبارك: عبدالرحمن عمرو 🌿<br>
-        تم تطوير هذه الأداة تعبيرًا عن الامتنان لما قدمه لنا من علم حق وفكر صمدي 🌿
-      </p>
-      <input type="password" id="passcodeInput" placeholder="رمز المرور"
-        class="p-3 text-center border rounded-xl w-64 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 mb-4" />
-      <br>
-      <button onclick="startApp()"
-        class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded-xl text-lg">ابدأ التحليل</button>
-      <div id="errorMessage" class="text-red-600 mt-3 text-sm"></div>
-    </div>
+  <div id="result" class="bg-green-50 border border-green-200 rounded-xl p-4 text-lg mb-4 text-gray-900"></div>
+  <div id="details" class="text-sm text-gray-700 mb-4 hidden"></div>
+  <div id="wordDetails" class="text-sm text-gray-800"></div>
+
+  <div class="mt-6 text-center">
+    <h4 class="text-lg font-semibold mb-2">📖 عرض آية في المصحف</h4>
+    <input type="number" id="suraNumber" placeholder="رقم السورة" min="1" max="114"
+      class="w-32 p-2 border rounded-lg text-center mb-2" />
+    <input type="number" id="ayaNumber" placeholder="رقم الآية" min="1"
+      class="w-32 p-2 border rounded-lg text-center mb-2 ml-2" />
+    <br>
+    <button onclick="openAyah()" class="bg-indigo-700 hover:bg-indigo-800 text-white py-2 px-4 rounded-xl mt-2 text-sm">📖 فتح في موقع quran.com</button>
   </div>
-
-  <div id="mainApp" style="display: none;" class="max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold text-center mb-4">التحليل الرقمي القرآني</h2>
-    <textarea id="inputText" placeholder="أدخل نصًا قرآنيًا أو نصًا عاديًا..."
-      class="w-full h-40 p-4 border-2 border-green-200 rounded-xl text-lg mb-4 focus:outline-none focus:ring-2 focus:ring-green-400 resize-none"></textarea>
-
-    <div class="flex flex-wrap justify-center gap-2 mb-4">
-      <button onclick="toggleDetails()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-xl text-sm">عرض/إخفاء التفاصيل</button>
-      <label class="flex items-center gap-2 text-green-800 text-sm font-medium">
-        <input type="checkbox" id="ignoreNumbers" checked class="scale-125 accent-green-600"> تجاهل الترقيم
-      </label>
-      <button onclick="copyResult()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-xl text-sm">📋 نسخ النتيجة</button>
-      <button onclick="downloadPDF()" class="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded-xl text-sm">📄 حفظ PDF</button>
-      <button onclick="analyzeWords()" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-xl text-sm">🔍 تحليل كل كلمة</button>
-    </div>
-
-    <div id="result" class="bg-green-50 border border-green-200 rounded-xl p-4 text-lg mb-4 text-gray-900"></div>
-    <div id="details" class="text-sm text-gray-700 mb-4 hidden"></div>
-    <div id="wordDetails" class="text-sm text-gray-800"></div>
-  </div>
+</div>
 
 <script>
 function toggleDarkMode() {
@@ -83,13 +88,11 @@ function toggleDarkMode() {
   const isDark = body.classList.contains("dark-mode");
   localStorage.setItem("dark-mode", isDark ? "on" : "off");
 }
-
 window.onload = function () {
   if (localStorage.getItem("dark-mode") === "on") {
     document.getElementById("body").classList.add("dark-mode");
   }
 }
-
 function startApp() {
   const pass = document.getElementById("passcodeInput").value;
   if (pass === "2222") {
@@ -99,7 +102,6 @@ function startApp() {
     document.getElementById("errorMessage").textContent = "رمز المرور غير صحيح";
   }
 }
-
 document.getElementById("passcodeInput").addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -107,11 +109,15 @@ document.getElementById("passcodeInput").addEventListener("keydown", function (e
   }
 });
 
-const values = {"أ":1,"إ":1,"آ":1,"ء":1,"ا":1,"ى":1,"ٱ":1,"ب":9,"ت":11,"ث":25,"ج":19,"ح":18,"خ":20,"د":16,"ذ":17,"ر":8,"ز":24,"س":15,"ش":21,"ص":22,"ض":23,"ط":26,"ظ":28,"ع":12,"غ":27,"ف":13,"ق":14,"ك":10,"ل":2,"م":4,"ن":3,"ه":7,"هـ":7,"ة":7,"و":5,"ؤ":5,"ي":6,"ئ":6,"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9};
-const ignoredChars = ['َ','ً','ُ','ٌ','ِ','ٍ','ْ','ّ','(',')','﴾','﴿','.',',','؛','؟','!','-','_','—','"','\'','\n','\r','/','۝','۩','۞','ۚ','ۛ','ۖ','ۗ','ۘ','ۙ','ۜ','۟','۠','ۡ','ۢ','ۤ','ۥ','ۦ','ۧ','ۨ','۬','۫','۪','ۭ','ۯ','ٖ','ٗ','ٓ','ٔ','ٞ','ـ','ٰ'];
+const values = {
+  "أ":1,"إ":1,"آ":1,"ء":1,"ا":1,"ى":1,"ٱ":1,"ب":9,"ت":11,"ث":25,"ج":19,"ح":18,"خ":20,"د":16,"ذ":17,"ر":8,"ز":24,
+  "س":15,"ش":21,"ص":22,"ض":23,"ط":26,"ظ":28,"ع":12,"غ":27,"ف":13,"ق":14,"ك":10,"ل":2,"م":4,"ن":3,"ه":7,"هـ":7,
+  "ة":7,"و":5,"ؤ":5,"ي":6,"ئ":6,"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9
+};
+const ignoredChars = ['َ','ً','ُ','ٌ','ِ','ٍ','ْ','ّ','(',')','﴾','﴿','.',',','؛','؟','!','-','_','—','"',"'",'\n','\r','/','۝','۩','۞','ۚ','ۛ','ۖ','ۗ','ۘ','ۙ','ۜ','۟','۠','ۡ','ۢ','ۤ','ۥ','ۦ','ۧ','ۨ','۬','۫','۪','ۭ','ۯ','ٖ','ٗ','ٓ','ٔ','ٞ','ـ','ٰ','\u200c','\u200f'];
 
-document.getElementById("inputText").addEventListener("input", () => { analyze(); });
-document.getElementById("ignoreNumbers").addEventListener("change", () => { analyze(); });
+document.getElementById("inputText").addEventListener("input", analyze);
+document.getElementById("ignoreNumbers").addEventListener("change", analyze);
 
 function simplify(num) {
   const steps = [];
@@ -128,7 +134,6 @@ function analyze() {
   const ignoreNumbers = document.getElementById("ignoreNumbers").checked;
   let total = 0;
   let details = [];
-
   for (let char of text) {
     if (char === ' ' || ignoredChars.includes(char)) {
       if (char === ' ') details.push('&nbsp;&nbsp;');
@@ -143,7 +148,6 @@ function analyze() {
       details.push(`${char} = غير معروف`);
     }
   }
-
   const steps = simplify(total);
   const simplified = steps[steps.length - 1];
   let html = "<strong>القيمة الكلية:</strong> " + total + "<br>";
@@ -161,91 +165,56 @@ function toggleDetails() {
 }
 
 function copyResult() {
-  const resultText = document.getElementById("result").innerText + "\n" + document.getElementById("details").innerText;
-  navigator.clipboard.writeText(resultText).then(() => {
-    alert("تم نسخ النتيجة!");
-  });
+  const resultText = document.getElementById("result").innerText + "\\n" + document.getElementById("details").innerText;
+  navigator.clipboard.writeText(resultText).then(() => alert("تم نسخ النتيجة!"));
 }
 
 function analyzeWords() {
   const text = document.getElementById("inputText").value.trim();
+  const ignoreNumbers = document.getElementById("ignoreNumbers").checked;
   const words = text.split(/\s+/);
-  let output = "";
-  for (let word of words) {
+  let output = "<strong>تحليل الكلمات:</strong><br>";
+
+  words.forEach(word => {
+    const cleanWord = word.replace(/[ًٌٍَُِّْٰـ]/g, '');
     let total = 0;
-    for (let c of word) {
-      if (ignoredChars.includes(c)) continue;
-      const value = values[c];
+
+    for (let char of cleanWord) {
+      if (ignoredChars.includes(char)) continue;
+      if (ignoreNumbers && /[0-9١-٩]/.test(char)) continue;
+      const value = values[char];
       if (value) total += value;
     }
-    output += word + " = " + total + "<br>";
-  }
-  document.getElementById("wordDetails").innerHTML = "<strong>تحليل الكلمات:</strong><br>" + output;
+
+    output += `${word} = ${total}<br>`;
+  });
+
+  document.getElementById("wordDetails").innerHTML = output;
 }
 
 function downloadPDF() {
-  const userInput = document.getElementById("inputText").value.trim();
-  const words = userInput.split(/\s+/);
-  const resultHTML = document.getElementById("result").innerHTML;
-
-  let wordBoxes = '';
-  for (let word of words) {
-    let breakdown = '';
-    let wordTotal = 0;
-    for (let char of word) {
-      if (ignoredChars.includes(char)) continue;
-      const value = values[char];
-      if (value !== undefined) {
-        breakdown += `${char} = ${value}<br>`;
-        wordTotal += value;
-      } else {
-        breakdown += `${char} = غير معروف<br>`;
-      }
-    }
-    wordBoxes += `
-      <div style="border:1px solid #ccc; border-radius:8px; padding:10px; margin:5px; font-size:14px; text-align:center; width:180px; page-break-inside: avoid; break-inside: avoid;">
-        <div style="font-weight:bold; margin-bottom:5px; color:#1b5e20;">${word}</div>
-        <div style="color:#555;">${breakdown}</div>
-        <div style="margin-top:5px; font-weight:bold; color:#000;">${wordTotal}</div>
-      </div>
-    `;
-  }
-
-  const content = document.createElement("div");
-  content.innerHTML = `
-    <div style="direction: rtl; font-family: 'Cairo', sans-serif; font-size: 16px; padding: 20px; color: #2e7d32;">
-      <div style="text-align: center; margin-bottom: 15px;">
-        <h2 style="margin-bottom: 5px;">بسم الله الوكيل</h2>
-        <h3 style="margin-bottom: 5px;">تحليل رقمي</h3>
-        <p style="font-size: 15px; color:#e69500;">✨ إلى اللانهاية نرتقي سويًا ∞</p>
-      </div>
-      <hr style="margin: 10px 0;">
-      <h3 style="color:#444;">النص المدخل:</h3>
-      <div style="background:#e8f5e9; padding:10px; border:1px solid #c8e6c9; margin-bottom: 20px; color:#1b5e20;">
-        ${userInput.replace(/\n/g, "<br>")}
-      </div>
-      <h3 style="color:#444;">نتائج التحليل:</h3>
-      <div style="margin-bottom:15px;">${resultHTML}</div>
-      <h3 style="color:#444;">تفصيل الكلمات:</h3>
-      <div style="display: flex; flex-wrap: wrap; gap: 10px;">${wordBoxes}</div>
-      <hr style="margin: 30px 0 10px;">
-      <div style="text-align:center; font-size:12px; color:#888;">
-        هذا التحليل ناتج عن القيم الرقمية المستخلصة من الأستاذ عبدالرحمن عمرو<br>
-        وتم تطوير وتصميم الأداة بواسطة حسن علي حبًا لكتاب الله وخدمةً للباحثين 🌿
-      </div>
-    </div>
-  `;
-
+  const content = document.getElementById("mainApp");
   const opt = {
-    margin: [0.5, 0.5, 0.5, 0.5],
-    filename: 'تحليل_كلمات_رقمي.pdf',
+    margin: 0.5,
+    filename: 'تحليل_رقمي.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
   };
-
   html2pdf().set(opt).from(content).save();
 }
+
+function openAyah() {
+  const sura = document.getElementById("suraNumber").value;
+  const aya = document.getElementById("ayaNumber").value;
+  if (sura && aya) {
+    const url = `https://quran.com/${sura}/${aya}`;
+    window.open(url, '_blank');
+  } else {
+    alert("يرجى إدخال رقم السورة والآية.");
+  }
+}
 </script>
+
 </body>
 </html>
